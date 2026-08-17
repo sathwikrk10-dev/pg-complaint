@@ -1,0 +1,1053 @@
+/* ==========================================================================
+   The Ledger — design tokens
+   Palette: deep ink navy surface, brass/amber accent, warm paper text
+   Type: Zilla Slab (display) / Inter (body) / IBM Plex Mono (utility)
+   ========================================================================== */
+
+:root {
+  --bg: #141b24;
+  --surface: #1c2531;
+  --surface-raised: #232e3d;
+  --border: #33404f;
+  --border-soft: #2a3542;
+
+  --text: #ede8de;
+  --text-muted: #93a0af;
+  --text-faint: #5f6c7a;
+
+  --brass: #c99a52;
+  --brass-strong: #e0b46e;
+
+  --status-open: #5090c9;
+  --status-inprogress: #c99a52;
+  --status-resolved: #5fa47c;
+  --status-closed: #7b8794;
+  --status-cancelled: #a15d6b;
+
+  --priority-low: #5fa47c;
+  --priority-medium: #c99a52;
+  --priority-high: #d68a4a;
+  --priority-urgent: #c15b4f;
+
+  --danger: #c15b4f;
+  --danger-strong: #d66b5e;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+
+  --font-display: 'Zilla Slab', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+  --shadow-lift: 0 12px 32px rgba(0,0,0,0.45);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+body {
+  background-image:
+    radial-gradient(
+      circle at 15% 0%,
+      rgba(201,154,82,0.06),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(80,144,201,0.05),
+      transparent 40%
+    );
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  margin: 0;
+}
+
+a {
+  color: var(--brass-strong);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass-strong);
+  outline-offset: 2px;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   App shell / layout
+   ========================================================================== */
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 28px 22px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.main {
+  padding: 32px 40px 60px;
+  max-width: 980px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   Brand
+   ========================================================================== */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border: 1.5px solid var(--brass);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--brass-strong);
+  flex-shrink: 0;
+}
+
+.brand-text h1 {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.brand-text p {
+  margin: 2px 0 0;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn-primary {
+  background: var(--brass);
+  color: #1a1408;
+  border: none;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-primary:hover {
+  background: var(--brass-strong);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-new {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.btn-new .plus {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-ghost:hover {
+  border-color: var(--brass);
+  color: var(--brass-strong);
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--danger-strong);
+  border: 1px solid var(--danger);
+  padding: 11px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: background 0.15s ease;
+}
+
+.btn-danger:hover {
+  background: rgba(193,91,79,0.12);
+}
+
+/* ==========================================================================
+   Filters
+   ========================================================================== */
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.filter-heading {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  font-weight: 500;
+}
+
+.input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  transition: border-color 0.15s ease;
+}
+
+.input:focus {
+  border-color: var(--brass);
+}
+
+.input::placeholder {
+  color: var(--text-faint);
+}
+
+select.input {
+  appearance: none;
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--text-faint) 50%
+    ),
+    linear-gradient(
+      135deg,
+      var(--text-faint) 50%,
+      transparent 50%
+    );
+  background-position:
+    calc(100% - 16px) center,
+    calc(100% - 11px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 30px;
+}
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pill {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.pill:hover {
+  border-color: var(--brass);
+  color: var(--text);
+}
+
+.pill.active {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: #1a1408;
+  font-weight: 600;
+}
+
+.ledger-stats {
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-soft);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-faint);
+  line-height: 1.7;
+}
+
+.ledger-stats strong {
+  color: var(--brass-strong);
+  font-weight: 600;
+}
+
+.mobile-filter-toggle {
+  display: none;
+}
+
+/* ==========================================================================
+   Main header / list
+   ========================================================================== */
+
+.main-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--border-soft);
+  padding-bottom: 18px;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brass-strong);
+  margin: 0 0 6px;
+}
+
+.main-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.feedback-banner {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+}
+
+.feedback-banner.success {
+  background: rgba(95,164,124,0.1);
+  border-color: var(--status-resolved);
+  color: var(--brass-strong);
+}
+
+.feedback-banner.error {
+  background: rgba(193,91,79,0.1);
+  border-color: var(--danger);
+  color: var(--danger-strong);
+}
+
+.complaint-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ==========================================================================
+   Complaint card — ledger index-card with priority tab
+   ========================================================================== */
+
+.complaint-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 18px;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px 18px 18px;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    border-color 0.12s ease,
+    box-shadow 0.12s ease;
+  overflow: hidden;
+}
+
+.complaint-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--priority-color, var(--brass));
+}
+
+.complaint-card:hover {
+  border-color: var(--border-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.28);
+}
+
+.card-entry-no {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-faint);
+  writing-mode: horizontal-tb;
+  min-width: 54px;
+}
+
+.card-main {
+  min-width: 0;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.card-resident {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.card-room {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--brass-strong);
+}
+
+.card-category {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.card-desc {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.card-meta-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+  font-size: 11.5px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+}
+
+.card-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+/* Priority tag */
+
+.priority-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--priority-color);
+}
+
+/* Status stamp — the signature element */
+
+.stamp {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--stamp-color, var(--status-open));
+  border: 2px solid var(--stamp-color, var(--status-open));
+  border-radius: 3px;
+  padding: 4px 10px;
+  transform: rotate(-2.5deg);
+  display: inline-block;
+  position: relative;
+  background: rgba(255,255,255,0.02);
+}
+
+.stamp::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border: 1px solid var(--stamp-color, var(--status-open));
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+/* ==========================================================================
+   Empty / loading states
+   ========================================================================== */
+
+.empty-state,
+.loading-state {
+  text-align: center;
+  padding: 70px 20px;
+  color: var(--text-muted);
+}
+
+.empty-stamp {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+  border: 2px dashed var(--border);
+  padding: 8px 18px;
+  border-radius: 4px;
+  transform: rotate(-3deg);
+  margin-bottom: 18px;
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.empty-state p {
+  font-size: 13.5px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border);
+  border-top-color: var(--brass);
+  border-radius: 50%;
+  margin: 0 auto 14px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   Overlays / sheets (modals)
+   ========================================================================== */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,14,19,0.72);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.ledger-sheet {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px 34px 30px;
+  max-width: 640px;
+  width: 100%;
+  position: relative;
+  box-shadow: var(--shadow-lift);
+  animation: rise 0.18s ease;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   FIX: Modal layering and clickable confirmation buttons
+   ========================================================================== */
+
+/*
+   The confirmation popup must always sit above the detail popup.
+   Without this, another overlay can intercept mouse clicks.
+*/
+
+#formOverlay {
+  z-index: 100;
+}
+
+#detailOverlay {
+  z-index: 200;
+}
+
+#confirmOverlay {
+  z-index: 1000 !important;
+  pointer-events: auto !important;
+}
+
+/*
+   Make sure the confirmation dialog itself is above its backdrop.
+*/
+
+#confirmOverlay .ledger-sheet {
+  position: relative;
+  z-index: 1001 !important;
+  pointer-events: auto !important;
+}
+
+/*
+   Make both confirmation buttons definitely clickable.
+*/
+
+#confirmOverlay button {
+  position: relative;
+  z-index: 1002 !important;
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+/*
+   Make sure hidden overlays are really hidden.
+*/
+
+[hidden] {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Sheet close button
+   ========================================================================== */
+
+.sheet-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  font-size: 16px;
+  padding: 6px;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+
+.sheet-close:hover {
+  color: var(--text);
+}
+
+.sheet-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  padding-right: 30px;
+}
+
+.sheet-subtitle {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin: 0 0 22px;
+}
+
+/* ==========================================================================
+   Form
+   ========================================================================== */
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.field label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.optional-tag {
+  font-weight: 400;
+  color: var(--text-faint);
+  text-transform: none;
+}
+
+.field-error {
+  font-size: 12px;
+  color: var(--danger-strong);
+  min-height: 14px;
+}
+
+.char-count {
+  font-size: 11px;
+  color: var(--text-faint);
+  text-align: right;
+  font-family: var(--font-mono);
+}
+
+textarea.input {
+  resize: vertical;
+  font-family: var(--font-body);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* ==========================================================================
+   Detail view
+   ========================================================================== */
+
+.detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-right: 30px;
+}
+
+.entry-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 20px;
+  margin: 18px 0 20px;
+  padding: 16px 18px;
+  background: var(--bg);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+}
+
+.detail-grid dt {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  margin-bottom: 3px;
+  font-family: var(--font-mono);
+}
+
+.detail-grid dd {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.mono-small {
+  font-family: var(--font-mono);
+  font-size: 11.5px !important;
+  color: var(--text-muted) !important;
+  word-break: break-all;
+}
+
+.detail-block {
+  margin-bottom: 20px;
+}
+
+.detail-block h3 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.detail-block p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.status-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.status-chip {
+  border: 1.5px solid var(--chip-color, var(--border));
+  color: var(--chip-color, var(--text-muted));
+  background: transparent;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.status-chip:hover {
+  background: color-mix(
+    in srgb,
+    var(--chip-color) 12%,
+    transparent
+  );
+}
+
+.status-chip.active {
+  background: var(--chip-color, var(--brass));
+  color: #14181f;
+}
+
+.detail-actions {
+  justify-content: space-between;
+}
+
+.confirm-sheet {
+  max-width: 440px;
+}
+
+/* ==========================================================================
+   Confirmation dialog buttons
+   ========================================================================== */
+
+#confirmOverlay .form-actions {
+  position: relative;
+  z-index: 1002;
+}
+
+#confirmCancelBtn,
+#confirmDeleteBtn {
+  position: relative;
+  z-index: 1003;
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+#confirmCancelBtn:disabled,
+#confirmDeleteBtn:disabled {
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Toasts
+   ========================================================================== */
+
+.toast-stack {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 2000;
+}
+
+.toast {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--brass);
+  border-radius: var(--radius-sm);
+  padding: 13px 18px;
+  font-size: 13.5px;
+  color: var(--text);
+  min-width: 260px;
+  max-width: 340px;
+  box-shadow: var(--shadow-lift);
+  animation: toast-in 0.2s ease;
+}
+
+.toast.error {
+  border-left-color: var(--danger);
+}
+
+.toast.success {
+  border-left-color: var(--status-resolved);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 90;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    box-shadow: var(--shadow-lift);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .mobile-filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 80;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+  }
+
+  .main {
+    padding: 70px 18px 50px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /*
+     Keep confirmation popup above everything on smaller screens too.
+  */
+
+  #confirmOverlay {
+    z-index: 1000 !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .complaint-card {
+    grid-template-columns: 1fr;
+  }
+
+  .card-entry-no {
+    display: none;
+  }
+
+  .card-side {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .ledger-sheet {
+    padding: 26px 20px 24px;
+  }
+
+  #confirmOverlay .ledger-sheet {
+    width: 100%;
+    max-width: 440px;
+  }
+
+  #confirmOverlay .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  #confirmOverlay .form-actions button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "complaints": [
+    {
+      "id": "0fbedac2-9e2e-4c70-892f-e256ba45bce1",
+      "residentName": "dingaaa",
+      "roomNumber": "b-204",
+      "contact": "9737989932",
+      "category": "Internet",
+      "description": "internet issue",
+      "priority": "High",
+      "status": "Open",
+      "additionalInfo": "",
+      "dateSubmitted": "2026-08-16T16:02:01.139Z",
+      "lastUpdated": "2026-08-16T16:02:01.139Z"
+    },
+    {
+      "id": "b1a1f5b2-1111-4a2b-9c3d-000000000001",
+      "residentName": "Aditi Sharma",
+      "roomNumber": "B-204",
+      "contact": "aditi.sharma@example.com",
+      "category": "Plumbing",
+      "description": "Kitchen sink has been leaking continuously for two days, water is pooling on the floor.",
+      "priority": "High",
+      "status": "Open",
+      "additionalInfo": "Please send someone before evening if possible.",
+      "dateSubmitted": "2026-08-14T09:15:00.000Z",
+      "lastUpdated": "2026-08-14T09:15:00.000Z"
+    },
+    {
+      "id": "b1a1f5b2-1111-4a2b-9c3d-000000000002",
+      "residentName": "Rohit Menon",
+      "roomNumber": "A-101",
+      "contact": "+91 9876543210",
+      "category": "Internet",
+      "description": "Wi-Fi has been down since this morning across the whole floor.",
+      "priority": "Medium",
+      "status": "Resolved",
+      "additionalInfo": "",
+      "dateSubmitted": "2026-08-13T18:42:00.000Z",
+      "lastUpdated": "2026-08-17T05:29:24.282Z"
+    },
+    {
+      "id": "b1a1f5b2-1111-4a2b-9c3d-000000000003",
+      "residentName": "Priya Nair",
+      "roomNumber": "C-310",
+      "contact": "priya.nair@example.com",
+      "category": "Housekeeping",
+      "description": "Common area on the third floor has not been cleaned in over a week.",
+      "priority": "Low",
+      "status": "Resolved",
+      "additionalInfo": "Spoke with the housekeeping staff on Monday.",
+      "dateSubmitted": "2026-08-10T11:00:00.000Z",
+      "lastUpdated": "2026-08-12T10:30:00.000Z"
+    }
+  ]
+}

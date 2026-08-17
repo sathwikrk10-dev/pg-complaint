@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Ledger — Resident Complaint Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">§</div>
+      <div class="brand-text">
+        <h1>The Ledger</h1>
+        <p>Resident Complaint Register</p>
+      </div>
+    </div>
+
+    <button class="btn-primary btn-new" id="openNewComplaintBtn" type="button">
+      <span class="plus">+</span> Log a complaint
+    </button>
+
+    <div class="filter-group">
+      <h2 class="filter-heading">Search</h2>
+      <input type="text" id="searchInput" class="input" placeholder="Name, room, keyword…" autocomplete="off" />
+    </div>
+
+    <div class="filter-group">
+      <h2 class="filter-heading">Category</h2>
+      <div class="pill-row" id="categoryFilters"></div>
+    </div>
+
+    <div class="filter-group">
+      <h2 class="filter-heading">Status</h2>
+      <div class="pill-row" id="statusFilters"></div>
+    </div>
+
+    <div class="filter-group">
+      <h2 class="filter-heading">Priority</h2>
+      <div class="pill-row" id="priorityFilters"></div>
+    </div>
+
+    <div class="filter-group">
+      <h2 class="filter-heading">Sort by</h2>
+      <select id="sortSelect" class="input">
+        <option value="dateSubmitted_desc">Newest first</option>
+        <option value="dateSubmitted_asc">Oldest first</option>
+        <option value="priority_desc">Priority: high → low</option>
+        <option value="priority_asc">Priority: low → high</option>
+        <option value="status_asc">Status (A–Z)</option>
+      </select>
+    </div>
+
+    <button class="btn-ghost" id="clearFiltersBtn" type="button">Clear all filters</button>
+
+    <div class="ledger-stats" id="ledgerStats" aria-live="polite"></div>
+  </aside>
+
+  <button class="mobile-filter-toggle" id="mobileFilterToggle" type="button" aria-label="Toggle filters">
+    ☰ Filters
+  </button>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <header class="main-header">
+      <div>
+        <p class="eyebrow" id="resultsEyebrow">Loading entries…</p>
+        <h2 class="main-title">Open register</h2>
+      </div>
+    </header>
+
+    <div id="feedbackBanner" class="feedback-banner" role="status" aria-live="polite" hidden></div>
+
+    <section id="complaintList" class="complaint-list" aria-live="polite">
+      <!-- complaint cards injected here -->
+    </section>
+
+    <div id="emptyState" class="empty-state" hidden>
+      <div class="empty-stamp">EMPTY</div>
+      <h3>No entries match</h3>
+      <p>Nothing in the register fits these filters yet. Adjust your search, or log a new complaint.</p>
+    </div>
+
+    <div id="loadingState" class="loading-state">
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Fetching the register…</p>
+    </div>
+  </main>
+</div>
+
+<!-- ============ NEW / EDIT COMPLAINT MODAL ============ -->
+<div class="overlay" id="formOverlay" hidden>
+  <div class="ledger-sheet form-sheet" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+    <button class="sheet-close" id="closeFormBtn" type="button" aria-label="Close">✕</button>
+    <h2 class="sheet-title" id="formTitle">Log a new complaint</h2>
+    <p class="sheet-subtitle" id="formSubtitle">Fill in the details below. Fields marked * are required.</p>
+
+    <form id="complaintForm" novalidate>
+      <input type="hidden" id="complaintId" />
+
+      <div class="field-row">
+        <div class="field">
+          <label for="residentName">Resident name *</label>
+          <input type="text" id="residentName" class="input" maxlength="100" />
+          <span class="field-error" id="err-residentName"></span>
+        </div>
+        <div class="field">
+          <label for="roomNumber">Room / flat number *</label>
+          <input type="text" id="roomNumber" class="input" maxlength="20" placeholder="e.g. B-204" />
+          <span class="field-error" id="err-roomNumber"></span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="contact">Contact (phone or email) *</label>
+          <input type="text" id="contact" class="input" placeholder="e.g. 98765 43210" />
+          <span class="field-error" id="err-contact"></span>
+        </div>
+        <div class="field">
+          <label for="category">Category *</label>
+          <select id="category" class="input"></select>
+          <span class="field-error" id="err-category"></span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="priority">Priority *</label>
+          <select id="priority" class="input"></select>
+          <span class="field-error" id="err-priority"></span>
+        </div>
+        <div class="field" id="statusFieldWrap" hidden>
+          <label for="statusEdit">Status</label>
+          <select id="statusEdit" class="input"></select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="description">Describe the issue *</label>
+        <textarea id="description" class="input" rows="4" maxlength="2000" placeholder="What's wrong, where exactly, and since when?"></textarea>
+        <span class="field-error" id="err-description"></span>
+        <span class="char-count" id="descCount">0 / 2000</span>
+      </div>
+
+      <div class="field">
+        <label for="additionalInfo">Additional information <span class="optional-tag">(optional)</span></label>
+        <textarea id="additionalInfo" class="input" rows="2" maxlength="2000" placeholder="Anything else worth mentioning — access instructions, prior attempts, etc."></textarea>
+        <span class="field-error" id="err-additionalInfo"></span>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" id="cancelFormBtn">Cancel</button>
+        <button type="submit" class="btn-primary" id="submitFormBtn">Submit complaint</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ DETAIL VIEW MODAL ============ -->
+<div class="overlay" id="detailOverlay" hidden>
+  <div class="ledger-sheet detail-sheet" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <button class="sheet-close" id="closeDetailBtn" type="button" aria-label="Close">✕</button>
+
+    <div class="detail-head">
+      <span class="entry-tag" id="detailEntryNo">No. —</span>
+      <div class="stamp" id="detailStatusStamp">STATUS</div>
+    </div>
+
+    <h2 class="sheet-title" id="detailTitle">Resident name</h2>
+    <p class="sheet-subtitle" id="detailMeta">Room · Category · Submitted</p>
+
+    <dl class="detail-grid">
+      <div>
+        <dt>Contact</dt>
+        <dd id="detailContact">—</dd>
+      </div>
+      <div>
+        <dt>Priority</dt>
+        <dd id="detailPriority">—</dd>
+      </div>
+      <div>
+        <dt>Last updated</dt>
+        <dd id="detailUpdated">—</dd>
+      </div>
+      <div>
+        <dt>Entry ID</dt>
+        <dd id="detailId" class="mono-small">—</dd>
+      </div>
+    </dl>
+
+    <div class="detail-block">
+      <h3>Description</h3>
+      <p id="detailDescription">—</p>
+    </div>
+
+    <div class="detail-block" id="detailAdditionalWrap">
+      <h3>Additional information</h3>
+      <p id="detailAdditional">—</p>
+    </div>
+
+    <div class="detail-block">
+      <h3>Update status</h3>
+      <div class="status-chip-row" id="statusChipRow"></div>
+    </div>
+
+    <div class="form-actions detail-actions">
+      <button type="button" class="btn-danger" id="deleteComplaintBtn">Cancel / delete complaint</button>
+      <button type="button" class="btn-primary" id="editComplaintBtn">Edit details</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DELETE CONFIRM ============ -->
+<div class="overlay" id="confirmOverlay" hidden>
+  <div class="ledger-sheet confirm-sheet" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <h2 class="sheet-title" id="confirmTitle">Remove this entry?</h2>
+    <p class="sheet-subtitle">This cancels the complaint and removes it from the register permanently. This can't be undone.</p>
+    <div class="form-actions">
+      <button type="button" class="btn-ghost" id="confirmCancelBtn">Keep it</button>
+      <button type="button" class="btn-danger" id="confirmDeleteBtn">Yes, remove it</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-stack" id="toastStack" aria-live="assertive"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
